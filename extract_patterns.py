@@ -77,6 +77,11 @@ def pattern2(tb):
     return results
 
 
+def dict_res2csv(results, output_path):
+    pass
+
+
 if __name__ == '__main__':
     tb = udapi.Document('agdt_synsets.conllu')
     p1 = pattern1(tb)
+    p2 = pattern2(tb)
