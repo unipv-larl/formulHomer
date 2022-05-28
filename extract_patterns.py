@@ -87,12 +87,14 @@ def dict_res2csv(results, output_path):
         for k in results[0]:
             dictionary[k] = []
         dictionary['ref'] = []
+        dictionary['lemma_verb'] = []
         dictionary['synset'] = []
         for r in results:
             dictionary['id'].append(f"occ{results.index(r) + 1}")
             for k in r:
                 dictionary[k].append(r[k].form)
             dictionary['synset'].append(r['verb'].misc['Synset'])
+            dictionary['lemma_verb'].append(r['verb'].lemma)
             dictionary['ref'].append(r['verb'].misc['Ref'])
         df = pd.DataFrame.from_dict(dictionary)
         df.to_csv(output_path, index=False)
