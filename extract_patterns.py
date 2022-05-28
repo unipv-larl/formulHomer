@@ -61,6 +61,7 @@ def pattern2(tb):
                                 pair[1].precedes(verb) and verb.precedes(pair[0]):
                             subj = pair[0]
                             obj = pair[1]
+                            # looking for an attribute
                             for atr in subj.children:
                                 if atr.misc['xrel'] == 'ATR' and atr.precedes(subj) and verb.precedes(atr):
                                     results.append({'obj': obj, 'verb': verb, 'atr': atr, 'subj': subj})
@@ -70,6 +71,7 @@ def pattern2(tb):
                                 pair[0].precedes(verb) and verb.precedes(pair[1]):
                             subj = pair[1]
                             obj = pair[0]
+                            # looking for an attribute
                             for atr in subj.children:
                                 if atr.misc['xrel'] == 'ATR' and atr.precedes(subj) and verb.precedes(atr):
                                     results.append({'obj': obj, 'verb': verb, 'atr': atr, 'subj': subj})
@@ -78,10 +80,24 @@ def pattern2(tb):
 
 
 def dict_res2csv(results, output_path):
-    pass
+    if not results:
+        print("Nothing in results list")
+    else:
+        dictionary = {k: [] for k in results[0]}
+        dictionary['ref'] = []
+        dictionary['synset'] = []
+        for r in results:
+            for k in r:
+                dictionary[k].append(r[k].form)
+            dictionary['synset'].append(r['verb'].misc['Synset'])
+            dictionary['ref'].append(r['verb'].misc['Ref'])
+        df = pd.DataFrame.from_dict(dictionary)
+        df.to_csv(output_path, index=False)
 
 
 if __name__ == '__main__':
     tb = udapi.Document('agdt_synsets.conllu')
     p1 = pattern1(tb)
     p2 = pattern2(tb)
+    dict_res2csv(p1, "pattern1.csv")
+    dict_res2csv(p2, "pattern2.csv")
