@@ -83,10 +83,13 @@ def dict_res2csv(results, output_path):
     if not results:
         print("Nothing in results list")
     else:
-        dictionary = {k: [] for k in results[0]}
+        dictionary = {'id': []}
+        for k in results[0]:
+            dictionary[k] = []
         dictionary['ref'] = []
         dictionary['synset'] = []
         for r in results:
+            dictionary['id'].append(f"occ{results.index(r) + 1}")
             for k in r:
                 dictionary[k].append(r[k].form)
             dictionary['synset'].append(r['verb'].misc['Synset'])
