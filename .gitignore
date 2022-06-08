@@ -26,3 +26,6 @@ Gemfile
 # IDE settings
 .idea/
 
+# miscellaneous files
+misc_files/
+
